@@ -37,5 +37,71 @@ $('.carousel').swipe( {
      allowPageScroll: 'vertical'
  });
 
+//login
 
+        // Initialize Firebase
+        var config = {
+        apiKey: "AIzaSyBPd3T4yYxJ_NFDgkkFqIE47EcnDBAYkLQ",
+        authDomain: "fir-hackathon-7211a.firebaseapp.com",
+        databaseURL: "https://fir-hackathon-7211a.firebaseio.com",
+        projectId: "fir-hackathon-7211a",
+        storageBucket: "fir-hackathon-7211a.appspot.com",
+        messagingSenderId: "766850801181"
+        };
+
+        firebase.initializeApp(config);
+
+        $( document ).ready(function() {
+            $("#upload").change(function(){
+                readURL(this);
+            });
+
+            $('#login').click( function() {
+                var uname = $('input[name=uname]').val()
+                var psw = $('input[name=psw]').val()
+
+                firebase.auth().signInWithEmailAndPassword(uname, psw).catch(function(error) {
+                  // Handle Errors here.
+                  var errorCode = error.code;
+                  var errorMessage = error.message;
+                  console.log(errorCode + ": " + errorMessage)
+                });
+            });
+        });
+
+  //signup 
+   var config = {
+        apiKey: "AIzaSyBPd3T4yYxJ_NFDgkkFqIE47EcnDBAYkLQ",
+        authDomain: "fir-hackathon-7211a.firebaseapp.com",
+        databaseURL: "https://fir-hackathon-7211a.firebaseio.com",
+        projectId: "fir-hackathon-7211a",
+        storageBucket: "fir-hackathon-7211a.appspot.com",
+        messagingSenderId: "766850801181"
+        };
+
+        firebase.initializeApp(config);
+
+        $( document ).ready(function() {
+            $("#upload").change(function(){
+                readURL(this);
+            });
+
+            $('#signup').click( function() {
+                var uname = $('input[name=uname]').val()
+                var psw = $('input[name=psw]').val()
+                var psw2 = $('input[name=psw2]').val()
+
+                if (psw != psw2) {
+                    console.log("Password doesn't match")
+                    return
+                }
+
+                firebase.auth().createUserWithEmailAndPassword(uname, psw).catch(function(error) {
+                  // Handle Errors here.
+                  var errorCode = error.code;
+                  var errorMessage = error.message;
+                  console.log(errorCode + ": " + errorMessage)
+                });
+            });
+        });
 
