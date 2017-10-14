@@ -13,15 +13,17 @@
 	<img id="preview" src="#" alt="Image preview" />
 
 	<script src="https://www.gstatic.com/firebasejs/4.5.1/firebase.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.5.1/firebase-firestore.js"></script>
+	<script src="http://requirejs.org/docs/release/2.2.0/minified/require.js"></script>
 	<script>
 		// Initialize Firebase
 		var config = {
-		apiKey: "AIzaSyBPd3T4yYxJ_NFDgkkFqIE47EcnDBAYkLQ",
-		authDomain: "fir-hackathon-7211a.firebaseapp.com",
-		databaseURL: "https://fir-hackathon-7211a.firebaseio.com",
-		projectId: "fir-hackathon-7211a",
-		storageBucket: "fir-hackathon-7211a.appspot.com",
-		messagingSenderId: "766850801181"
+			apiKey: "AIzaSyBPd3T4yYxJ_NFDgkkFqIE47EcnDBAYkLQ",
+			authDomain: "fir-hackathon-7211a.firebaseapp.com",
+			databaseURL: "https://fir-hackathon-7211a.firebaseio.com",
+			projectId: "fir-hackathon-7211a",
+			storageBucket: "fir-hackathon-7211a.appspot.com",
+			messagingSenderId: "766850801181"
 		};
 
 		firebase.initializeApp(config);
@@ -45,23 +47,9 @@
 		    }
 		}
 
-		function previewFile(){
-		       var preview = document.querySelector('img'); //selects the query named img
-		       var file    = document.querySelector('input[type=file]').files[0]; //sames as here
-		       var reader  = new FileReader();
-
-		       reader.onloadend = function () {
-		           preview.src = reader.result;
-		       }
-
-		       if (file) {
-		           reader.readAsDataURL(file); //reads the data as a URL
-		       } else {
-		           preview.src = "";
-		       }
-		    }
-
 		function uploadFile(file) {
+  		    var user = firebase.auth().currentUser;
+
             // Create a root reference
 			var storageRef = firebase.storage().ref();
 
@@ -88,26 +76,39 @@
 			        break;
 			    }
 			  }, function(error) {
+				  // A full list of error codes is available at
+				  // https://firebase.google.com/docs/storage/web/handle-errors
+				  switch (error.code) {
+				    case 'storage/unauthorized':
+				      // User doesn't have permission to access the object
+				      alert("Please log in")
+				      break;
 
-			  // A full list of error codes is available at
-			  // https://firebase.google.com/docs/storage/web/handle-errors
-			  switch (error.code) {
-			    case 'storage/unauthorized':
-			      // User doesn't have permission to access the object
-			      break;
+				    case 'storage/canceled':
+				      // User canceled the upload
+				      break;
 
-			    case 'storage/canceled':
-			      // User canceled the upload
-			      break;
-
-			    case 'storage/unknown':
-			      // Unknown error occurred, inspect error.serverResponse
-			      break;
-			  }
-			}, function() {
+				    case 'storage/unknown':
+				      // Unknown error occurred, inspect error.serverResponse
+				      break;
+				  }
+			  }, function() {
 			  // Upload completed successfully, now we can get the download URL
 			  var downloadURL = uploadTask.snapshot.downloadURL;
-			  console.log("url: " + downloadURL)
+
+			  var db = firebase.firestore();
+
+			  db.collection("albums").doc("uH1AIsXS5dpBlNpP8UxY")
+			  	.collection("photos").add({
+			    	photo: downloadURL,
+			    	uploader: user.email
+				})
+				.then(function(docRef) {
+				    console.log("Document written with ID: ", docRef.id);
+				})
+				.catch(function(error) {
+				    console.error("Error adding document: ", error);
+				});
 			});
 		}
 	</script>
