@@ -9,24 +9,22 @@
 	  crossorigin="anonymous"></script>
 </head>
 <body>
-
-
 	<input type="file" id="upload"> <br/><br/>
 	<img id="preview" src="#" alt="Image preview" />
 
 	<script src="https://www.gstatic.com/firebasejs/4.5.1/firebase.js"></script>
 	<script>
 		// Initialize Firebase
-			var config = {
-			apiKey: "AIzaSyBPd3T4yYxJ_NFDgkkFqIE47EcnDBAYkLQ",
-			authDomain: "fir-hackathon-7211a.firebaseapp.com",
-			databaseURL: "https://fir-hackathon-7211a.firebaseio.com",
-			projectId: "fir-hackathon-7211a",
-			storageBucket: "fir-hackathon-7211a.appspot.com",
-			messagingSenderId: "766850801181"
-			};
+		var config = {
+		apiKey: "AIzaSyBPd3T4yYxJ_NFDgkkFqIE47EcnDBAYkLQ",
+		authDomain: "fir-hackathon-7211a.firebaseapp.com",
+		databaseURL: "https://fir-hackathon-7211a.firebaseio.com",
+		projectId: "fir-hackathon-7211a",
+		storageBucket: "fir-hackathon-7211a.appspot.com",
+		messagingSenderId: "766850801181"
+		};
 
-			firebase.initializeApp(config);
+		firebase.initializeApp(config);
 
 		$( document ).ready(function() {
 			$("#upload").change(function(){

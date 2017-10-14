@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Authentication</title>
+	<meta charset="utf-8">
+	<script
+	  src="https://code.jquery.com/jquery-3.2.1.min.js"
+	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	  crossorigin="anonymous"></script>
+</head>
+<body>
+
+	<div class="container">
+	    <label><b>Email address</b></label>
+	    <input type="email" placeholder="email@gmail.com" name="uname" required>
+
+	    <label><b>Password</b></label>
+	    <input type="password" placeholder="Enter Password" name="psw" required>
+
+	    <label><b>Confirm Password</b></label>
+	    <input type="password" placeholder="Enter Password" name="psw2" required>
+
+	    <button type="button" id="signup">Sign Up</button>
+  	</div>
+
+	<script src="https://www.gstatic.com/firebasejs/4.5.1/firebase.js"></script>
+	<script>
+		// Initialize Firebase
+		var config = {
+		apiKey: "AIzaSyBPd3T4yYxJ_NFDgkkFqIE47EcnDBAYkLQ",
+		authDomain: "fir-hackathon-7211a.firebaseapp.com",
+		databaseURL: "https://fir-hackathon-7211a.firebaseio.com",
+		projectId: "fir-hackathon-7211a",
+		storageBucket: "fir-hackathon-7211a.appspot.com",
+		messagingSenderId: "766850801181"
+		};
+
+		firebase.initializeApp(config);
+
+		$( document ).ready(function() {
+			$("#upload").change(function(){
+				readURL(this);
+			});
+
+			$('#signup').click( function() {
+				var uname = $('input[name=uname]').val()
+				var psw = $('input[name=psw]').val()
+				var psw2 = $('input[name=psw2]').val()
+
+				if (psw != psw2) {
+					console.log("Password doesn't match")
+					return
+				}
+
+				firebase.auth().createUserWithEmailAndPassword(uname, psw).catch(function(error) {
+				  // Handle Errors here.
+				  var errorCode = error.code;
+				  var errorMessage = error.message;
+				  console.log(errorCode + ": " + errorMessage)
+				});
+			});
+		});
+ 	</script>
+
+</body>
+</html>
