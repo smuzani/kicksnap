@@ -35,10 +35,6 @@
 		firebase.initializeApp(config);
 
 		$( document ).ready(function() {
-			$("#upload").change(function(){
-				readURL(this);
-			});
-
 			$('#login').click( function() {
 				var uname = $('input[name=uname]').val()
 				var psw = $('input[name=psw]').val()
